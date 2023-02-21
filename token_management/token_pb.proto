@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package token_management;
+// import "google/protobuf/timestamp.proto";
+
+option go_package = "example.com/token_client_server_rpc;token_client_server_rpc";
+
+service TokenManager {
+  rpc CreateNewToken (Token) returns (Response) {}
+  rpc ReadToken (Token) returns (WriteResponse) {}
+  rpc WriteToken (WriteTokenMsg) returns (WriteResponse) {}
+  rpc DropToken (Token) returns (Response) {}
+  rpc WriteBroadcast(WriteBroadcastRequest) returns (WriteBroadcastResponse) {}
+  rpc ReadBroadcast(ReadBroadcastRequest) returns (ReadBroadcastResponse) {}
+  // rpc GetTokens (GetTokensParams) returns (TokenList) {}
+}
+
+message Token {
+  int32 id=1;
+  // string name=2;2
+  // repeated int32 domain=3;
+  // repeated int32 state=4;
+}
+message WriteTokenMsg {
+  int32 id=1;
+  string name=2;
+  uint64 low=3;
+  uint64 mid=4;
+  uint64 high=5;
+}
+message Response {
+  string create_response=1;
+}
+
+message WriteResponse {
+  uint64 create_write_response=1;
+}
+message WriteBroadcastRequest {
+  uint64 hash_val=1;
+  bool reading_flag=2;
+  int32 ack=3;
+  string wts=4;
+  string name=5;
+  uint64 low=6;
+  uint64 mid=7;
+  uint64 high=8;
+  int32 token_id=9;
+  string server=10;
+}
+message WriteBroadcastResponse {
+  int32 ack=1;
+}
+
+message ReadBroadcastRequest {
+  int32 token_id=1;
+  // string server=6;
+}
+message ReadBroadcastResponse {
+  string wts=1;
+  uint64 finalVal=2;
+  string name=3;
+  uint64 low=4;
+  uint64 mid=5;
+  uint64 high=6;
+}
